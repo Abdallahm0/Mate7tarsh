@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'Screens/Login/login_screen.dart';
+import 'Screens/login_screen.dart';
 import 'constants.dart';
 
 void main() {

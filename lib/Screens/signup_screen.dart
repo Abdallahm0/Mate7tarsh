@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../constants.dart';
-import '../Verification/verification_page.dart';
+import '../constants.dart';
+import 'verification_page.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
