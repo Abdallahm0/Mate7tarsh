@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mate7tarsh/Screens/landing_page.dart';
 
 class VerifyAccountPage extends StatelessWidget {
   const VerifyAccountPage({super.key});
@@ -121,6 +122,13 @@ class VerifyAccountPage extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       // Continue logic here
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LandingPage(),
+                        ),
+                      );
+
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue[900],
