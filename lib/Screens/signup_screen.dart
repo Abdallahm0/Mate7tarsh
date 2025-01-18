@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mate7tarsh/Screens/complete_your_profile.dart';
 import '../constants.dart';
 import 'verification_page.dart';
 
@@ -70,7 +71,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(height: 30),
-          _buildTextField(label: "UserName", icon: Icons.person_outline),
+          _buildTextField(label: "Name", icon: Icons.person_outline),
           _buildTextField(
             label: "Email",
             icon: Icons.email_outlined,
@@ -137,7 +138,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const VerifyAccountPage(),
+                    builder: (context) => const CompleteProfilePage(),
                   ),
                 );
               },

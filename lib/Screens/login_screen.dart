@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mate7tarsh/Screens/landing_page.dart';
 import '../constants.dart';
 import 'signup_screen.dart';
 import 'already_have_an_account_acheck.dart';
@@ -11,15 +12,17 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       // Add a background color here
-      backgroundColor: const Color(0xFF6FA4B2), // Replace with your desired blue color
+      backgroundColor:
+          const Color(0xFF6FA4B2), // Replace with your desired blue color
       body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              topImage(),
-              loginForm(context), // Ensure this widget exists and is styled properly
-            ],
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            topImage(),
+            loginForm(
+                context), // Ensure this widget exists and is styled properly
+          ],
+        ),
       ),
     );
   }
@@ -78,8 +81,8 @@ class LoginScreen extends StatelessWidget {
                   hintStyle: TextStyle(color: Color(0xFF25507a)),
                   filled: true,
                   fillColor: Colors.white,
-                  contentPadding: EdgeInsets.symmetric(vertical: 20,
-                      horizontal: 16 ),
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                   prefixIcon: Padding(
                     padding: EdgeInsets.all(defaultPadding),
                     child: Icon(Icons.person_2_outlined),
@@ -101,8 +104,8 @@ class LoginScreen extends StatelessWidget {
                 hintStyle: TextStyle(color: Color(0xFF25507a)),
                 filled: true,
                 fillColor: Colors.white,
-                contentPadding: EdgeInsets.symmetric(vertical: 20,
-                    horizontal: 16 ) ,
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 20, horizontal: 16),
                 prefixIcon: Padding(
                   padding: EdgeInsets.all(defaultPadding),
                   child: Icon(Icons.lock),
@@ -110,13 +113,14 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
           ),
-          Align(alignment: Alignment.centerRight,
+          Align(
+            alignment: Alignment.centerRight,
             child: Padding(
-              padding: const
-              EdgeInsets.only(right: 16, top: 8 ),
-              child:
-              GestureDetector(
-                onTap: () { //to add forget password screen here (navigate to a forget password screen)
+              padding: const EdgeInsets.only(right: 16, top: 8),
+              child: GestureDetector(
+                onTap: () {
+                  //to add forget password screen here (
+                  //igate to a forget password screen)
                 },
                 child: Text("Forgot Password?"),
               ),
@@ -127,11 +131,19 @@ class LoginScreen extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xFF123F68),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),// Optional rounded corners
+                borderRadius:
+                    BorderRadius.circular(30), // Optional rounded corners
               ),
               padding: EdgeInsets.symmetric(vertical: 16, horizontal: 32),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LandingPage(),
+                ),
+              );
+            },
             child: Text(
               "Login".toUpperCase(),
               style: TextStyle(color: Colors.white), // Button text color
@@ -143,7 +155,7 @@ class LoginScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const SignUpScreen(),
+                  builder: (context) => SignUpScreen(),
                 ),
               );
             },

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "592828810653",
+    "project_id": "mate7tarsh",
+    "storage_bucket": "mate7tarsh.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:592828810653:android:8220e7752c1ab4c5709b74",
+        "android_client_info": {
+          "package_name": "com.mate7tarsh"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "592828810653-2cg6t62erp4nmpma286jjjgrgsslm2pd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mate7tarsh",
+            "certificate_hash": "8f6956fbc6294153169846108972331922df658d"
+          }
+        },
+        {
+          "client_id": "592828810653-u21fnmrrli55heib7qqvs2cd63p3053s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSmTGczdIZJT8vuExX1bZ9dAjRwuMVIxU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "592828810653-u21fnmrrli55heib7qqvs2cd63p3053s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

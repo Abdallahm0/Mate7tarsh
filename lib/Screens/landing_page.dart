@@ -4,7 +4,6 @@ import 'package:mate7tarsh/Screens/home_screen.dart';
 import 'package:mate7tarsh/Screens/profile_screen.dart';
 import 'package:mate7tarsh/Screens/search_screen.dart';
 
-
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
 
@@ -14,6 +13,8 @@ class LandingPage extends StatefulWidget {
 
 class _LandingPageState extends State<LandingPage> {
   int _currentIndex = 0;
+  Color appBarBackgroundColor = Colors.transparent;
+
   final List<Widget> _screens = [
     HomeScreenPage(),
     SearchScreenPage(),
@@ -24,17 +25,22 @@ class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      
       body: _screens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Color(0xFF123F68),
-        unselectedItemColor: Colors.white,
-        selectedItemColor: Colors.deepOrange,
+        backgroundColor: Color(0xFF6FA4B2),
+        unselectedItemColor: Colors.black,
+        selectedItemColor: Colors.white,
         currentIndex: _currentIndex,
         onTap: (index) {
           setState(() {
             _currentIndex = index;
+            if (index == 3) {
+              appBarBackgroundColor = Color(0xFF6FA4B2);
+            } else {
+              appBarBackgroundColor = Colors.transparent;
+            }
           });
         },
         items: [

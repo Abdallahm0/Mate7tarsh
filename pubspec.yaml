@@ -36,6 +36,10 @@ dependencies:
   material_color_utilities: ^0.11.1  # Keep this version
   meta: ^1.15.0  # Keep this as it is to match Flutter's dependencies
   full_screen_image: any
+  get: ^4.6.6
+  sweet_nav_bar: ^1.0.7
+  firebase_auth: ^5.4.0
+  firebase_core: ^3.10.0
 
 
 
@@ -66,9 +70,7 @@ flutter_native_splash:
 flutter:
 
   assets:
-    - assets/logo.png
-    - assets/splash-screen.jpg
-    - assets/small-logo.jpg
+    - assets/
 
 
   # The following line ensures that the Material Icons font is
