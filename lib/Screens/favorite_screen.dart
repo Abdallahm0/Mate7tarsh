@@ -1,8 +1,13 @@
-import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+//import 'package:mate7tarsh/controller/food_controller.dart';
+import 'package:mate7tarsh/model/controller.dart';
+import 'package:mate7tarsh/model/test_modle.dart';
 
 class FavoriteScreenPage extends StatelessWidget {
-  const FavoriteScreenPage({super.key});
+  FavoriteScreenPage({super.key});
+
+  final FoodController _foodController = Get.put(FoodController());
 
   @override
   Widget build(BuildContext context) {
@@ -11,74 +16,54 @@ class FavoriteScreenPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            // Top curved container
             Container(
               height: 144,
-              margin: EdgeInsets.only(right: 100),
-              decoration: BoxDecoration(
-                  color: Color(0xFF6FA4B2),
-                  borderRadius: BorderRadius.only(
-                    bottomRight: Radius.elliptical(700,400),
-                  )),
+              margin: const EdgeInsets.only(right: 100),
+              decoration: const BoxDecoration(
+                color: Color(0xFF6FA4B2),
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.elliptical(700, 400),
+                ),
+              ),
             ),
+
             const SizedBox(height: 16),
+
+            // Main content
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 16), // Adjust spacing as needed
-                  const Text(
-                    "What Would You Like To Eat?",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 16),
-                  // Updated Search Box
-                  Center(
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.6,
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: "Enter Dish Name",
-                          suffixIcon: const Icon(Icons.search),
-                          contentPadding: const EdgeInsets.symmetric(
-                            vertical: 10,
-                            horizontal: 50,
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50),
-                            borderSide: const BorderSide(color: Colors.grey),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(50),
-                            borderSide: const BorderSide(color: Colors.grey),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(60),
-                            borderSide: const BorderSide(color: Colors.grey),
-                          ),
-                          fillColor: Colors.grey[400],
-                          filled: true,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _buildCategoryIcon(Icons.fastfood, "All"),
-                      _buildCategoryIcon(Icons.ramen_dining, "Chinese"),
-                      _buildCategoryIcon(Icons.set_meal, "Seafood"),
-                    ],
-                  ),
                   const SizedBox(height: 24),
                   const Text(
                     "Your Favorite Restaurants",
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 16),
-                  // Add restaurant cards here if needed
+
+                  // List of favorite restaurant cards
+                  Obx(() {
+                    final favorites = _foodController.favoriteLunch +
+                        _foodController.favoriteBreakfast;
+
+                    if (favorites.isEmpty) {
+                      return const Text(
+                        "No favorite restaurants yet!",
+                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      );
+                    }
+
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: favorites.length,
+                      itemBuilder: (context, index) {
+                        return _buildRestaurantCard(favorites[index]);
+                      },
+                    );
+                  }),
                 ],
               ),
             ),
@@ -88,34 +73,90 @@ class FavoriteScreenPage extends StatelessWidget {
     );
   }
 
-  Widget _buildCategoryIcon(IconData icon, String label) {
-    return Column(
-      children: [
-        CircleAvatar(
-          radius: 30,
-          backgroundColor: Colors.teal.shade100,
-          child: Icon(icon, size: 30, color: Colors.teal),
+  // Method to build a restaurant card
+  Widget _buildRestaurantCard(TestModle restaurant) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      elevation: 3,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Row(
+          children: [
+            // Restaurant image
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.asset(
+                restaurant.img,
+                width: 80,
+                height: 80,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Container(
+                  width: 80,
+                  height: 80,
+                  color: Colors.grey[200],
+                  child: const Icon(Icons.image, color: Colors.grey),
+                ),
+              ),
+            ),
+
+            const SizedBox(width: 16),
+
+            // Restaurant details
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    restaurant.name,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    restaurant.cuisineType,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      const Icon(
+                    Icons.star,
+                   color: Color(0xFFFF7972), // Use the hex color code #FF7972
+                   size: 16,
+                   ),
+                      const SizedBox(width: 4),
+                      Text(
+                        restaurant.rating.toString(),
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            // Favorite icon
+            IconButton(
+              icon: const Icon(Icons.favorite, color: Colors.red),
+              onPressed: () {
+                // Toggle favorite status
+                _foodController.toggleFavorite(
+                  restaurant,
+                  isLunch: _foodController.lunchList.contains(restaurant),
+                );
+              },
+            ),
+          ],
         ),
-        const SizedBox(height: 8),
-        Text(label, style: const TextStyle(fontSize: 14)),
-      ],
+      ),
     );
-  }
-}
-
-class SemiCirclePainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = Color(0xFF6FA4B2);
-    final rect = Rect.fromCircle(
-      center: Offset(size.width / 2, size.height),
-      radius: size.width,
-    );
-    canvas.drawArc(rect, math.pi, math.pi, true, paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return false;
   }
 }

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mate7tarsh/Screens/complete_your_profile.dart';
+import 'package:mate7tarsh/Screens/verification_page.dart';
 import '../constants.dart';
-import 'verification_page.dart';
+import '../model/signup_service.dart'; // Ensure this import is correct
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -12,18 +13,24 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   bool agreeToTerms = false;
-
   bool showPassword = false;
-
   bool showConfirmPassword = false;
+
+  // Variables to store user input
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+
+  // Loading state
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      // Add a background color here
       backgroundColor: const Color(0xFF6FA4B2),
-      // Replace with your desired blue color
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -39,26 +46,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget signUpTopImage(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(height: 6 * defaultPadding),
-        const SizedBox(height: 20),
-        const Center(
-          child: Text(
-            "Complete Your Profile",
-            style: TextStyle(
-              fontSize: 26,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF17405e),
-              letterSpacing: 1.2,
-              shadows: [
-                Shadow(
-                  color: Colors.black26,
-                  offset: Offset(1, 2),
-                  blurRadius: 4,
-                ),
-              ],
-            ),
-          ),
-        ),
+         SizedBox(height: 6 * defaultPadding),
+         SizedBox(height: 20),
+         Text(
+            
+           "Sign Up",
+           style: TextStyle(
+             fontSize: 32,
+             fontWeight: FontWeight.bold,
+             color: Color(0xFF17405e),
+             letterSpacing: 1.2,
+             shadows: [
+               Shadow(
+                  
+                 color: Color.fromRGBO(0, 0, 0, 0.45),
+                 offset: Offset(3, 5),
+                 blurRadius: 7,
+         
+               ),
+             ],
+           ),
+         ),
         const SizedBox(height: 20),
       ],
     );
@@ -71,16 +79,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(height: 30),
-          _buildTextField(label: "Name", icon: Icons.person_outline),
+          _buildTextField(
+            label: "Name",
+            icon: Icons.person_outline,
+            controller: _nameController,
+          ),
           _buildTextField(
             label: "Email",
             icon: Icons.email_outlined,
             keyboardType: TextInputType.emailAddress,
+            controller: _emailController,
           ),
           _buildPasswordField(
             label: "Password",
             icon: Icons.lock_outline,
             isObscured: !showPassword,
+            controller: _passwordController,
             toggleVisibility: () {
               setState(() {
                 showPassword = !showPassword;
@@ -91,6 +105,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             label: "Confirm Password",
             icon: Icons.lock_outline,
             isObscured: !showConfirmPassword,
+            controller: _confirmPasswordController,
             toggleVisibility: () {
               setState(() {
                 showConfirmPassword = !showConfirmPassword;
@@ -131,29 +146,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
           const SizedBox(height: 20),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                // Add form submission logic here
-                // After Sign up API is called, navigate to Verification screen
-                // TODO: Add sign up API call
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const CompleteProfilePage(),
-                  ),
-                );
-              },
+              onPressed: _isLoading ? null : _submitForm,
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF123f68),
                 padding:
-                const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: const Text(
-                "Verify",
-                style: TextStyle(fontSize: 16, color: Colors.white),
-              ),
+              child: _isLoading
+                  ? const CircularProgressIndicator(color: Colors.white)
+                  : const Text(
+                      "Verify",
+                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    ),
             ),
           ),
         ],
@@ -164,11 +171,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget _buildTextField({
     required String label,
     required IconData icon,
+    required TextEditingController controller,
     TextInputType keyboardType = TextInputType.text,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: TextField(
+        controller: controller,
         keyboardType: keyboardType,
         decoration: InputDecoration(
           prefixIcon: Icon(icon, color: Colors.black),
@@ -189,11 +198,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
     required String label,
     required IconData icon,
     required bool isObscured,
+    required TextEditingController controller,
     required VoidCallback toggleVisibility,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: TextField(
+        controller: controller,
         obscureText: isObscured,
         decoration: InputDecoration(
           prefixIcon: Icon(icon, color: Colors.black),
@@ -216,4 +227,74 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
   }
+
+  // Submit Form
+  void _submitForm() async {
+    // Validate the form
+    if (_nameController.text.isEmpty ||
+        _emailController.text.isEmpty ||
+        _passwordController.text.isEmpty ||
+        _confirmPasswordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please fill in all fields.'),
+        ),
+      );
+      return;
+    }
+
+    if (_passwordController.text != _confirmPasswordController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Passwords do not match.'),
+        ),
+      );
+      return;
+    }
+
+    if (!agreeToTerms) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please agree to the terms and conditions.'),
+        ),
+      );
+      return;
+    }
+
+    setState(() {
+      _isLoading = true; // Show loading indicator
+    });
+
+    try {
+      // Call the API
+      final response = await SignupService.signUp(
+        name: _nameController.text,
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+
+      // Handle the response
+      print('Sign-up successful: $response');
+
+      // Navigate to the next page after successful sign-up
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const CompleteProfilePage(),
+        ),
+      );
+    } catch (e) {
+      // Show detailed error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to sign up: $e'),
+        ),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false; // Hide loading indicator
+      });
+    }
+  }
 }
+

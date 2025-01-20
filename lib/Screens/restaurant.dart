@@ -1,10 +1,59 @@
 import 'package:flutter/material.dart';
 
+void main() {
+  runApp(MaterialApp(home: MyApp()));
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: RestaurantScreen(
+        restaurantName: 'Restaurant 1',
+        restaurantImage: 'assets/restaurant1.png',
+        cuisineType: 'French Cuisine',
+        location: 'Cairo, Egypt',
+        menu: restaurant1Menu, // Pass specific menu here
+      ),
+    );
+  }
+}
+
+// Example menu data for Restaurant 1
+List<Dish> restaurant1Menu = [
+  Dish(name: 'Fillet Mignon', price: '820.73 EGP', imagePath: 'assets/home.png', description: ''),
+  Dish(name: 'Grilled Chicken', price: '410.38 EGP', imagePath: 'assets/grilled.png', description: ''),
+  Dish(name: 'Smoked Salmon Bites', price: '254.98 EGP', imagePath: 'assets/salmon.png', description: ''),
+  Dish(name: 'Creamy Seafood Soup', price: '182.58 EGP', imagePath: 'assets/soup.png', description: ''),
+  Dish(name: 'Mix Green Salad', price: '113.98 EGP', imagePath: 'assets/salad.png', description: ''),
+  Dish(name: 'Cocktails', price: '82.58 EGP', imagePath: 'assets/cocktail.png', description: ''),
+];
+
+// Example menu data for Restaurant 2
+List<Dish> restaurant2Menu = [
+  Dish(name: 'Pizza Margherita', price: '250.00 EGP', imagePath: 'assets/pizza.png', description: ''),
+  Dish(name: 'Lasagna', price: '150.00 EGP', imagePath: 'assets/lasagna.png', description: ''),
+  Dish(name: 'Spaghetti', price: '120.00 EGP', imagePath: 'assets/spaghetti.png', description: ''),
+  Dish(name: 'Fried Chicken', price: '180.00 EGP', imagePath: 'assets/chicken.png', description: ''),
+  Dish(name: 'Caesar Salad', price: '90.00 EGP', imagePath: 'assets/caesar_salad.png', description: ''),
+  Dish(name: 'Red Wine', price: '200.00 EGP', imagePath: 'assets/red_wine.png', description: ''),
+];
+
+List<Dish> restaurant3Menu = [
+  Dish(name: 'Pizza Margherita', price: '250.00 EGP', imagePath: 'assets/pizza.png', description: ''),
+  Dish(name: 'Lasagna', price: '150.00 EGP', imagePath: 'assets/lasagna.png', description: ''),
+  Dish(name: 'Spaghetti', price: '120.00 EGP', imagePath: 'assets/spaghetti.png', description: ''),
+  Dish(name: 'Fried Chicken', price: '180.00 EGP', imagePath: 'assets/chicken.png', description: ''),
+  Dish(name: 'Caesar Salad', price: '90.00 EGP', imagePath: 'assets/caesar_salad.png', description: ''),
+  Dish(name: 'Red Wine', price: '200.00 EGP', imagePath: 'assets/red_wine.png', description: ''),
+];
+
 class RestaurantScreen extends StatefulWidget {
   final String restaurantName;
   final String restaurantImage;
   final String cuisineType;
   final String location;
+  final List<Dish> menu;
 
   const RestaurantScreen({
     Key? key,
@@ -12,6 +61,7 @@ class RestaurantScreen extends StatefulWidget {
     required this.restaurantImage,
     required this.cuisineType,
     required this.location,
+    required this.menu,
   }) : super(key: key);
 
   @override
@@ -21,8 +71,9 @@ class RestaurantScreen extends StatefulWidget {
 class _RestaurantScreenState extends State<RestaurantScreen> {
   bool isFavorite = false;
   bool showReviews = false;
-  List<Map<String, dynamic>> reviews = []; // List to store reviews
-  bool isReviewPopupVisible = false; // Track if the review popup is visible
+  bool showMenu = true;
+
+  bool isReviewPopupVisible = false;
 
   // Function to show the review popup
   void _showReviewPopup() {
@@ -31,6 +82,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
     });
 
     showModalBottomSheet(
+      isDismissible: true,
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
@@ -38,12 +90,6 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
         return ReviewPopup(
           onReviewSubmitted: (String review, int rating) {
             setState(() {
-              reviews.add({
-                'name': 'You', // Replace with the user's name
-                'date': 'Just now', // Replace with the current date
-                'rating': rating,
-                'review': review,
-              });
               isReviewPopupVisible = false;
             });
           },
@@ -82,14 +128,17 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                         children: [
                           Text(
                             widget.restaurantName,
-                            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                                fontSize: 24, fontWeight: FontWeight.bold),
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               IconButton(
                                 icon: Icon(
-                                  isFavorite ? Icons.favorite : Icons.favorite_border,
+                                  isFavorite
+                                      ? Icons.favorite
+                                      : Icons.favorite_border,
                                   color: isFavorite ? Colors.red : Colors.grey,
                                 ),
                                 onPressed: () {
@@ -116,7 +165,8 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                       const SizedBox(height: 1),
                       Text(
                         widget.cuisineType,
-                        style: const TextStyle(fontSize: 16, color: Colors.grey),
+                        style:
+                            const TextStyle(fontSize: 16, color: Colors.grey),
                       ),
                       const SizedBox(height: 8),
                       Row(
@@ -126,7 +176,8 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                           Expanded(
                             child: Text(
                               widget.location,
-                              style: const TextStyle(color: Colors.grey, fontSize: 14),
+                              style: const TextStyle(
+                                  color: Colors.grey, fontSize: 14),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -138,6 +189,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                           ElevatedButton(
                             onPressed: () {
                               setState(() {
+                                showMenu = true;
                                 showReviews = false;
                               });
                             },
@@ -147,13 +199,15 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                             ),
-                            child: const Text('Menu', style: TextStyle(color: Colors.black)),
+                            child: const Text('Menu',
+                                style: TextStyle(color: Colors.black)),
                           ),
                           const SizedBox(width: 10),
                           ElevatedButton(
                             onPressed: () {
                               setState(() {
                                 showReviews = true;
+                                showMenu = false;
                               });
                             },
                             style: ElevatedButton.styleFrom(
@@ -162,7 +216,8 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                             ),
-                            child: const Text('Reviews', style: TextStyle(color: Colors.white)),
+                            child: const Text('Reviews',
+                                style: TextStyle(color: Colors.white)),
                           ),
                         ],
                       ),
@@ -170,11 +225,8 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                   ),
                 ),
                 const Divider(),
-                if (!showReviews) ...[
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.0),
-                  ),
-                  const SizedBox(height: 8),
+                if (showMenu) ...[
+                  // Show menu when 'Menu' button is clicked
                   GridView.count(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
@@ -183,14 +235,9 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                     mainAxisSpacing: 8,
                     crossAxisSpacing: 8,
                     padding: const EdgeInsets.all(16),
-                    children: [
-                      buildDishCard('Fillet Mignon', '820.73 EGP', 'assets/home.png'),
-                      buildDishCard('Grilled Chicken', '410.38 EGP', 'assets/grilled.png'),
-                      buildDishCard('Smoked Salmon Bites', '254.98 EGP', 'assets/salmon.png'),
-                      buildDishCard('Creamy Seafood Soup', '182.58 EGP', 'assets/soup.png'),
-                      buildDishCard('Mix Green Salad', '113.98 EGP', 'assets/salad.png'),
-                      buildDishCard('Cocktails', '82.58 EGP', 'assets/cocktail.png'),
-                    ],
+                    children: widget.menu.map((dish) {
+                      return buildDishCard(dish.name, dish.price, dish.imagePath);
+                    }).toList(),
                   ),
                 ] else ...[
                   Padding(
@@ -207,15 +254,10 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                             ),
                           ),
                           icon: const Icon(Icons.edit, color: Colors.black),
-                          label: const Text('Write a Review', style: TextStyle(color: Colors.black)),
+                          label: const Text('Write a Review',
+                              style: TextStyle(color: Colors.black)),
                         ),
                         const SizedBox(height: 16),
-                        ...reviews.map((review) => buildReviewCard(
-                              review['name'],
-                              review['date'],
-                              review['rating'],
-                              review['review'],
-                            )),
                       ],
                     ),
                   ),
@@ -245,7 +287,8 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
         children: [
           Expanded(
             child: ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(8)),
               child: Image.asset(
                 imagePath,
                 fit: BoxFit.cover,
@@ -267,44 +310,22 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
       ),
     );
   }
+}
 
-  Widget buildReviewCard(String name, String date, int rating, String review) {
-    return Column(
-      children: [
-        ListTile(
-          contentPadding: EdgeInsets.zero,
-          leading: CircleAvatar(
-            backgroundColor: Colors.grey[200],
-            child: Text(name[0], style: const TextStyle(color: Colors.black)),
-          ),
-          title: Text(name),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 4),
-              Row(
-                children: List.generate(
-                  rating,
-                  (index) => const Icon(Icons.star, color: Colors.amber, size: 16),
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(review),
-            ],
-          ),
-          trailing: Text(date, style: const TextStyle(color: Colors.grey)),
-        ),
-        const Divider(),
-      ],
-    );
-  }
+class Dish {
+  final String name;
+  final String price;
+  final String imagePath;
+
+  Dish({required this.name, required this.price, required this.imagePath, required String description});
 }
 
 // Review Popup Widget
 class ReviewPopup extends StatefulWidget {
   final Function(String review, int rating) onReviewSubmitted;
 
-  const ReviewPopup({Key? key, required this.onReviewSubmitted}) : super(key: key);
+  const ReviewPopup({Key? key, required this.onReviewSubmitted})
+      : super(key: key);
 
   @override
   _ReviewPopupState createState() => _ReviewPopupState();
@@ -316,66 +337,68 @@ class _ReviewPopupState extends State<ReviewPopup> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Write a Review',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              IconButton(
-                icon: const Icon(Icons.share),
-                onPressed: () {
-                  widget.onReviewSubmitted(_reviewController.text, rating);
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          TextField(
-            controller: _reviewController,
-            decoration: const InputDecoration(
-              hintText: 'Write your review here...',
-              border: OutlineInputBorder(),
-            ),
-            maxLines: 3,
-          ),
-          const SizedBox(height: 16),
-          Row(
-            children: List.generate(
-              5,
-              (index) => IconButton(
-                icon: Icon(
-                  Icons.star,
-                  color: index < rating ? Colors.amber : Colors.grey,
+    return SingleChildScrollView(
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Write a Review',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                onPressed: () {
-                  setState(() {
-                    rating = index + 1;
-                  });
-                },
+                IconButton(
+                  icon: const Icon(Icons.share),
+                  onPressed: () {
+                    widget.onReviewSubmitted(_reviewController.text, rating);
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _reviewController,
+              decoration: const InputDecoration(
+                hintText: 'Write your review here...',
+                border: OutlineInputBorder(),
+              ),
+              maxLines: 3,
+            ),
+            const SizedBox(height: 16),
+            Row(
+              children: List.generate(
+                5,
+                (index) => IconButton(
+                  icon: Icon(
+                    Icons.star,
+                    color: index < rating ? Colors.amber : Colors.grey,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      rating = index + 1;
+                    });
+                  },
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 16),
-          ElevatedButton(
-            onPressed: () {
-              widget.onReviewSubmitted(_reviewController.text, rating);
-              Navigator.pop(context);
-            },
-            child: const Text('Submit Review'),
-          ),
-        ],
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                widget.onReviewSubmitted(_reviewController.text, rating);
+                Navigator.pop(context);
+              },
+              child: const Text('Submit Review'),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'account_info.dart'; // Import the AccountInfoScreen
 
 class EditMyProfile extends StatelessWidget {
   const EditMyProfile({Key? key}) : super(key: key);
@@ -6,7 +7,7 @@ class EditMyProfile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // Ensures the entire screen background is white
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -23,21 +24,31 @@ class EditMyProfile extends StatelessWidget {
         centerTitle: true,
       ),
       body: Container(
-        color: Colors.white, // Additional container for a white background
+        color: Colors.white,
         child: ListView(
           children: [
-            buildProfileOption(context, "Account info", "", Icons.arrow_forward_ios),
-            buildProfileOption(context, "Location", "", Icons.arrow_forward_ios),
-            buildProfileOption(context, "Change email", "", Icons.arrow_forward_ios),
-            buildProfileOption(context, "Change password", "", Icons.arrow_forward_ios),
-            buildProfileOption(context, "Notifications", "Enabled", Icons.arrow_forward_ios),
+            // Account Info
             buildProfileOption(
               context,
-              "Language",
-              "English",
+              "Account info",
+              "",
               Icons.arrow_forward_ios,
-              onTap: () => _showLanguageBottomSheet(context),
+              onTap: () {
+                // Navigate to the AccountInfoScreen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AccountInfo(),
+                  ),
+                );
+              },
             ),
+
+            // Notifications
+            buildProfileOption(context, "Notifications", "Enabled", Icons.arrow_forward_ios),
+
+            // Location
+            buildProfileOption(context, "Location", "", Icons.arrow_forward_ios),
           ],
         ),
       ),
@@ -85,7 +96,7 @@ class EditMyProfile extends StatelessWidget {
       ),
       builder: (context) {
         return Container(
-          color: Colors.white, // Ensures the bottom sheet has a white background
+          color: Colors.white,
           padding: const EdgeInsets.all(16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -125,4 +136,10 @@ class EditMyProfile extends StatelessWidget {
       },
     );
   }
+}
+
+void main() {
+  runApp(MaterialApp(
+    home: EditMyProfile(),
+  ));
 }

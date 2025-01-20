@@ -113,19 +113,19 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 16, top: 8),
-              child: GestureDetector(
-                onTap: () {
-                  //to add forget password screen here (
-                  //igate to a forget password screen)
-                },
-                child: Text("Forgot Password?"),
-              ),
-            ),
-          ),
+          // Align(
+          //   alignment: Alignment.centerRight,
+          //   child: Padding(
+          //     padding: const EdgeInsets.only(right: 16, top: 8),
+          //     child: GestureDetector(
+          //       onTap: () {
+          //         //to add forget password screen here (
+          //         //igate to a forget password screen)
+          //       },
+          //       child: Text("Forgot Password?"),
+          //     ),
+          //   ),
+          // ),
           const SizedBox(height: defaultPadding),
           ElevatedButton(
             style: ElevatedButton.styleFrom(

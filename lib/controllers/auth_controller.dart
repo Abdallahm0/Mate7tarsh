@@ -5,8 +5,6 @@
 // import 'package:mate7tarsh/Screens/complete_your_profile.dart';
 
 // class AuthController extends GetxController {
-//   final FirebaseAuth _auth = FirebaseAuth.instance;
-
 //   // Observables for form inputs
 //   var email = ''.obs;
 //   var password = ''.obs;
@@ -29,10 +27,9 @@
 
 //     try {
 //       isLoading.value = true;
-//       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-//         email: email.value,
-//         password: password.value,
-//       );
+//       // TODO: Call backend signup API. When the server gives back the
+//       // authentication token, we need to store it somehow in local storage
+//       // The storing part can be skipped for the demo
 
 //       Get.snackbar('Success', 'Account created successfully!',
 //           snackPosition: SnackPosition.BOTTOM, backgroundColor: Colors.green);

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
+
 class FoodWidget extends StatelessWidget {
   final String img;
   final String name;
-  final String cuisineType;
+  final String description; // Use description for home page
   final bool isFavorite;
   final VoidCallback onFavoritePressed;
   final VoidCallback onTap;
@@ -13,7 +14,7 @@ class FoodWidget extends StatelessWidget {
     Key? key,
     required this.img,
     required this.name,
-    required this.cuisineType,
+    required this.description, // Use description
     required this.isFavorite,
     required this.onFavoritePressed,
     required this.onTap,
@@ -33,14 +34,14 @@ class FoodWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
-                  child: Image.asset(
-                    img,
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                  ),
+              ClipRRect(
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(8)),
+                child: Image.asset(
+                  img,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: 90,
                 ),
               ),
               Padding(
@@ -54,6 +55,7 @@ class FoodWidget extends StatelessWidget {
                       children: [
                         Text(
                           name,
+                          maxLines: 1,
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
@@ -63,30 +65,35 @@ class FoodWidget extends StatelessWidget {
                           icon: Icon(
                             isFavorite ? Icons.favorite : Icons.favorite_border,
                             color: isFavorite ? Colors.red : Colors.grey,
-                            size: 20,
+                            size: 25,
                           ),
                           onPressed: onFavoritePressed,
                         ),
                       ],
                     ),
                     const SizedBox(height: 1),
+                    // Display description in the home screen
                     Text(
-                      cuisineType,
+                      description, // Use description
                       style: const TextStyle(color: Colors.grey, fontSize: 12),
                     ),
                     const SizedBox(height: 1),
-                    Row(
-                      children: [
-                        // Rating stars (without numeric value)
-                        ...List.generate(
+                    // Stars aligned to the right
+                    Align(
+                      alignment: Alignment.centerRight, // Align stars to the right
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min, // Minimize row width
+                        children: List.generate(
                           5,
                           (index) => Icon(
                             Icons.star,
-                            color: index < rating ? Colors.amber : Colors.grey,
-                            size: 18,
+                            color: index < rating
+                                ? const Color(0xFFFF7972) // Star color
+                                : Colors.grey, // Grey for unselected stars
+                            size: 19,
                           ),
                         ),
-                      ],
+                      ),
                     ),
                   ],
                 ),

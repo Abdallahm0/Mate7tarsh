@@ -25,40 +25,43 @@ class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: _screens[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Color(0xFF6FA4B2),
-        unselectedItemColor: Colors.black,
-        selectedItemColor: Colors.white,
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-            if (index == 3) {
-              appBarBackgroundColor = Color(0xFF6FA4B2);
-            } else {
-              appBarBackgroundColor = Colors.transparent;
-            }
-          });
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_border_outlined),
-            label: 'Favorite',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
+      bottomNavigationBar: Container(
+        height: 60, // Adjust height as needed
+        color: Color(0xFF6FA4B2), // Background color
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround, // Center icons
+          children: [
+            _buildNavItem(Icons.home, 0),
+            _buildNavItem(Icons.thumb_up, 1),
+            _buildNavItem(Icons.favorite_border_outlined, 2),
+            _buildNavItem(Icons.person, 3),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Helper method to build navigation items
+  Widget _buildNavItem(IconData icon, int index) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _currentIndex = index;
+          if (index == 3) {
+            appBarBackgroundColor = Color(0xFF6FA4B2);
+          } else {
+            appBarBackgroundColor = Colors.transparent;
+          }
+        });
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            color: _currentIndex == index ? Colors.white : Colors.black, // Selected color
+            size: 25, // Adjust icon size
           ),
         ],
       ),

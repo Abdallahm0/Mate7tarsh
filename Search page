@@ -1,115 +1,115 @@
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 
-class SearchScreenPage extends StatelessWidget {
-  const SearchScreenPage({Key? key}) : super(key: key);
+// class SearchScreenPage extends StatelessWidget {
+//   const SearchScreenPage({Key? key}) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            const Text(
-              "Zamalek",
-              style: TextStyle(color: Colors.black, fontSize: 16),
-            ),
-            const SizedBox(width: 8),
-            const Icon(Icons.location_on, color: Colors.black, size: 18),
-          ],
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-              "What Would You Like To Eat?",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              decoration: InputDecoration(
-                hintText: "Enter Dish Name",
-                prefixIcon: const Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildCategoryIcon(Icons.fastfood, "All"),
-                _buildCategoryIcon(Icons.ramen_dining, "Chinese"),
-                _buildCategoryIcon(Icons.set_meal, "Seafood"),
-              ],
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              "Your Favorite Restaurants",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildRestaurantCard("La Casetta", "assets/images/la_casetta.jpg"),
-                _buildRestaurantCard("Sizzler", "assets/images/sizzler.jpg"),
-              ],
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Favorite"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
-        ],
-      ),
-    );
-  }
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         leading: IconButton(
+//           icon: const Icon(Icons.arrow_back, color: Colors.black),
+//           onPressed: () => Navigator.pop(context),
+//         ),
+//         backgroundColor: Colors.transparent,
+//         elevation: 0,
+//         title: Row(
+//           mainAxisAlignment: MainAxisAlignment.end,
+//           children: [
+//             const Text(
+//               "Zamalek",
+//               style: TextStyle(color: Colors.black, fontSize: 16),
+//             ),
+//             const SizedBox(width: 8),
+//             const Icon(Icons.location_on, color: Colors.black, size: 18),
+//           ],
+//         ),
+//       ),
+//       body: Padding(
+//         padding: const EdgeInsets.all(16.0),
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.center,
+//           children: [
+//             const Text(
+//               "What Would You Like To Eat?",
+//               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+//               textAlign: TextAlign.center,
+//             ),
+//             const SizedBox(height: 16),
+//             TextField(
+//               decoration: InputDecoration(
+//                 hintText: "Enter Dish Name",
+//                 prefixIcon: const Icon(Icons.search),
+//                 border: OutlineInputBorder(
+//                   borderRadius: BorderRadius.circular(12),
+//                 ),
+//               ),
+//             ),
+//             const SizedBox(height: 16),
+//             Row(
+//               mainAxisAlignment: MainAxisAlignment.spaceAround,
+//               children: [
+//                 _buildCategoryIcon(Icons.fastfood, "All"),
+//                 _buildCategoryIcon(Icons.ramen_dining, "Chinese"),
+//                 _buildCategoryIcon(Icons.set_meal, "Seafood"),
+//               ],
+//             ),
+//             const SizedBox(height: 24),
+//             const Text(
+//               "Your Favorite Restaurants",
+//               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+//             ),
+//             const SizedBox(height: 16),
+//             Row(
+//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//               children: [
+//                 _buildRestaurantCard("La Casetta", "assets/images/la_casetta.jpg"),
+//                 _buildRestaurantCard("Sizzler", "assets/images/sizzler.jpg"),
+//               ],
+//             ),
+//           ],
+//         ),
+//       ),
+//       bottomNavigationBar: BottomNavigationBar(
+//         items: const [
+//           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+//           BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
+//           BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Favorite"),
+//           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+//         ],
+//       ),
+//     );
+//   }
 
-  Widget _buildCategoryIcon(IconData icon, String label) {
-    return Column(
-      children: [
-        CircleAvatar(
-          radius: 30,
-          backgroundColor: Colors.teal.shade100,
-          child: Icon(icon, size: 30, color: Colors.teal),
-        ),
-        const SizedBox(height: 8),
-        Text(label, style: const TextStyle(fontSize: 14)),
-      ],
-    );
-  }
+//   Widget _buildCategoryIcon(IconData icon, String label) {
+//     return Column(
+//       children: [
+//         CircleAvatar(
+//           radius: 30,
+//           backgroundColor: Colors.teal.shade100,
+//           child: Icon(icon, size: 30, color: Colors.teal),
+//         ),
+//         const SizedBox(height: 8),
+//         Text(label, style: const TextStyle(fontSize: 14)),
+//       ],
+//     );
+//   }
 
-  Widget _buildRestaurantCard(String name, String imagePath) {
-    return Column(
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: Image.asset(
-            imagePath,
-            height: 100,
-            width: 100,
-            fit: BoxFit.cover,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Text(name, style: const TextStyle(fontSize: 14)),
-      ],
-    );
-  }
-}
+//   Widget _buildRestaurantCard(String name, String imagePath) {
+//     return Column(
+//       children: [
+//         ClipRRect(
+//           borderRadius: BorderRadius.circular(12),
+//           child: Image.asset(
+//             imagePath,
+//             height: 100,
+//             width: 100,
+//             fit: BoxFit.cover,
+//           ),
+//         ),
+//         const SizedBox(height: 8),
+//         Text(name, style: const TextStyle(fontSize: 14)),
+//       ],
+//     );
+//   }
+// }
