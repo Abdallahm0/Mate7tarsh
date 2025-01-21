@@ -4,23 +4,35 @@ import '../constants.dart';
 import 'signup_screen.dart';
 import 'already_have_an_account_acheck.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  // Form key for validation
+  final _formKey = GlobalKey<FormState>();
+
+  // Controllers for text fields
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  // Loading state
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      // Add a background color here
-      backgroundColor:
-          const Color(0xFF6FA4B2), // Replace with your desired blue color
+      backgroundColor: const Color(0xFF6FA4B2),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             topImage(),
-            loginForm(
-                context), // Ensure this widget exists and is styled properly
+            loginForm(context),
           ],
         ),
       ),
@@ -32,7 +44,6 @@ class LoginScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         const SizedBox(height: 3 * defaultPadding),
-        // Reduce top spacing
         ClipRRect(
           child: Image.asset(
             "assets/small-logo.jpg",
@@ -40,7 +51,7 @@ class LoginScreen extends StatelessWidget {
             fit: BoxFit.scaleDown,
           ),
         ),
-        const SizedBox(height: 24), // Reduce spacing between logo and text
+        const SizedBox(height: 24),
         const Text(
           "Welcome Back!",
           style: TextStyle(
@@ -55,43 +66,51 @@ class LoginScreen extends StatelessWidget {
                 )
               ]),
         ),
-        const SizedBox(height: 24), // Adjust spacing between text and form
-        // ... login form code here ...
+        const SizedBox(height: 24),
       ],
     );
   }
 
   Widget loginForm(BuildContext context) {
     return Form(
+      key: _formKey, // Assign the form key
       child: Column(
         children: [
           Padding(
-              padding: EdgeInsets.symmetric(horizontal: 45, vertical: 8),
-              child: TextFormField(
-                keyboardType: TextInputType.emailAddress,
-                textInputAction: TextInputAction.next,
-                cursorColor: kPrimaryColor,
-                onSaved: (email) {},
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide.none,
-                  ),
-                  hintText: "Username",
-                  hintStyle: TextStyle(color: Color(0xFF25507a)),
-                  filled: true,
-                  fillColor: Colors.white,
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-                  prefixIcon: Padding(
-                    padding: EdgeInsets.all(defaultPadding),
-                    child: Icon(Icons.person_2_outlined),
-                  ),
+            padding: EdgeInsets.symmetric(horizontal: 45, vertical: 8),
+            child: TextFormField(
+              controller: _usernameController,
+              keyboardType: TextInputType.emailAddress,
+              textInputAction: TextInputAction.next,
+              cursorColor: kPrimaryColor,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: BorderSide.none,
                 ),
-              )),
+                hintText: "Username",
+                hintStyle: TextStyle(color: Color(0xFF25507a)),
+                filled: true,
+                fillColor: Colors.white,
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+                prefixIcon: Padding(
+                  padding: EdgeInsets.all(defaultPadding),
+                  child: Icon(Icons.person_2_outlined),
+                ),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter your username';
+                }
+                return null;
+              },
+            ),
+          ),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 45, vertical: 8),
             child: TextFormField(
+              controller: _passwordController,
               textInputAction: TextInputAction.done,
               obscureText: true,
               cursorColor: kPrimaryColor,
@@ -111,43 +130,30 @@ class LoginScreen extends StatelessWidget {
                   child: Icon(Icons.lock),
                 ),
               ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter your password';
+                }
+                return null;
+              },
             ),
           ),
-          // Align(
-          //   alignment: Alignment.centerRight,
-          //   child: Padding(
-          //     padding: const EdgeInsets.only(right: 16, top: 8),
-          //     child: GestureDetector(
-          //       onTap: () {
-          //         //to add forget password screen here (
-          //         //igate to a forget password screen)
-          //       },
-          //       child: Text("Forgot Password?"),
-          //     ),
-          //   ),
-          // ),
           const SizedBox(height: defaultPadding),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xFF123F68),
               shape: RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.circular(30), // Optional rounded corners
+                borderRadius: BorderRadius.circular(30),
               ),
               padding: EdgeInsets.symmetric(vertical: 16, horizontal: 32),
             ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => LandingPage(),
-                ),
-              );
-            },
-            child: Text(
-              "Login".toUpperCase(),
-              style: TextStyle(color: Colors.white), // Button text color
-            ),
+            onPressed: _isLoading ? null : _submitForm,
+            child: _isLoading
+                ? const CircularProgressIndicator(color: Colors.white)
+                : Text(
+                    "Login".toUpperCase(),
+                    style: TextStyle(color: Colors.white),
+                  ),
           ),
           const SizedBox(height: defaultPadding),
           AlreadyHaveAnAccountCheck(
@@ -163,5 +169,30 @@ class LoginScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  // Submit Form
+  void _submitForm() {
+    // Validate the form
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true; // Show loading indicator
+      });
+
+      // Simulate a delay for loading
+      Future.delayed(const Duration(seconds: 2), () {
+        setState(() {
+          _isLoading = false; // Hide loading indicator
+        });
+
+        // Navigate to the landing page after successful validation
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LandingPage(),
+          ),
+        );
+      });
+    }
   }
 }

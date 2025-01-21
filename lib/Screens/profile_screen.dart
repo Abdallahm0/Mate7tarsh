@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mate7tarsh/Screens/edit_myprofile.dart';
-import 'package:mate7tarsh/Screens/restaurant.dart'; // Remove if not needed
+import 'package:mate7tarsh/Screens/login_screen.dart'; // Import your login screen
 
 const textColor = Color(0xFF021B33);
 
@@ -105,7 +105,13 @@ class ProfileScreenPage extends StatelessWidget {
                       icon: Icons.logout,
                       title: "Logout",
                       onTap: () {
-                        // TODO: Handle logout functionality
+                        // Navigate back to the login screen
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginScreen(),
+                          ),
+                        );
                       },
                     ),
                   ],

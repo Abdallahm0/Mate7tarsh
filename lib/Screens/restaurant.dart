@@ -194,7 +194,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                               });
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.grey,
+                              backgroundColor: const Color(0xFFD9D9D9),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
                               ),
@@ -211,13 +211,13 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
                               });
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.grey,
+                              backgroundColor:const Color(0xFFD9D9D9),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
                               ),
                             ),
                             child: const Text('Reviews',
-                                style: TextStyle(color: Colors.white)),
+                                style: TextStyle(color: Colors.black)),
                           ),
                         ],
                       ),

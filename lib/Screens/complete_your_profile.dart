@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mate7tarsh/Screens/landing_page.dart';
-import 'api_service.dart'; // Ensure this import is correct
 
 class CompleteProfilePage extends StatefulWidget {
   const CompleteProfilePage({super.key});
@@ -41,7 +40,7 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
                     Container(
                       decoration: BoxDecoration(
                         color: const Color(0xFF113F67),
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                           bottomRight: Radius.circular(500),
                         ),
                       ),
@@ -124,7 +123,7 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
                     ),
                   ),
                   child: _isLoading
-                      ? CircularProgressIndicator(color: Colors.white)
+                      ? const CircularProgressIndicator(color: Colors.white)
                       : const Text(
                           "Finish sign up",
                           style: TextStyle(
@@ -243,45 +242,17 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
   }
 
   // Submit Form
-  void _submitForm() async {
+  void _submitForm() {
     if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true; // Show loading indicator
-      });
-
-      try {
-        await ApiService.completeProfile(
-          age: age!,
-          favoritePlaces: favoritePlaces!,
-          favoriteFood: favoriteFood!,
-          diseases: diseases!,
-        );
-
-        // Navigate to the landing page after successful submission
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const LandingPage(),
-          ),
-        );
-      } catch (e) {
-        // Show error message
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to complete profile: $e'),
-          ),
-        );
-      } finally {
-        setState(() {
-          _isLoading = false; // Hide loading indicator
-        });
-      }
+      // Navigate to the Landing Page
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LandingPage()),
+      );
     } else {
       // If the form is invalid, show a snackbar or error message
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please fill in all fields correctly.'),
-        ),
+        const SnackBar(content: Text('Please fill in all fields correctly.')),
       );
     }
   }

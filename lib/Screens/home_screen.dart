@@ -4,6 +4,7 @@ import 'package:mate7tarsh/Components/food_widget.dart';
 import 'package:mate7tarsh/model/controller.dart';
 import 'package:mate7tarsh/Screens/restaurant.dart'; // Import RestaurantScreen
 import 'package:geolocator/geolocator.dart'; // Import geolocator package
+import 'package:mate7tarsh/model/test_modle.dart';
 import 'package:mate7tarsh/services/location_service.dart'; // Import LocationService
 
 class HomeScreenPage extends StatefulWidget {
@@ -21,6 +22,9 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
   final LocationService _locationService =
       LocationService(); // Initialize LocationService
   String locationText = "Fetching location..."; // Default location text
+
+  // Controller for the search bar
+  final TextEditingController _searchController = TextEditingController();
 
   final List<String> advertisementImages = [
     "assets/offer.png",
@@ -68,6 +72,91 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
     }
   }
 
+  // Function to handle search
+  // Function to handle search
+void _handleSearch() {
+  final String query = _searchController.text.trim();
+
+  if (query.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Please enter a restaurant name.'),
+      ),
+    );
+    return;
+  }
+
+  // Find the restaurant in the list
+  TestModle? restaurant;
+  try {
+    restaurant = controller.lunchList.firstWhere(
+      (restaurant) => restaurant.name.toLowerCase() == query.toLowerCase(),
+    );
+  } catch (e) {
+    // If not found in lunchList, search in breakfastList
+    try {
+      restaurant = controller.breakfastList.firstWhere(
+        (restaurant) => restaurant.name.toLowerCase() == query.toLowerCase(),
+      );
+    } catch (e) {
+      // If still not found, show an error
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Restaurant not found.'),
+        ),
+      );
+      return;
+    }
+  }
+
+  // Define or fetch the menu for the restaurant
+  List<Dish> menu = [
+    Dish(
+        name: "Fillet mignon",
+        description: "Delicious dish 1",
+        price: "820.73 EGP",
+        imagePath: 'assets/home.png'),
+    Dish(
+        name: "Grilled Chicken",
+        description: "Grilled Chicken",
+        price: "410.38 EGP",
+        imagePath: 'assets/grilled.png'),
+    Dish(
+        name: "Smoked Salmon Bites",
+        description: "Delicious dish 1",
+        price: "284.81",
+        imagePath: 'assets/salmon.png'),
+    Dish(
+        name: "Creamy Seafood Soup",
+        description: "Delicious dish 1",
+        price: "182.38",
+        imagePath: 'assets/Seafood.png'),
+    Dish(
+        name: "Mix Green Salad",
+        description: "Delicious dish 1",
+        price: "150.70",
+        imagePath: 'assets/home.png'),
+    Dish(
+        name: "Cocktails",
+        description: "Delicious dish 1",
+        price: "139.70",
+        imagePath: 'assets/salad.png'),
+  ];
+
+  // Navigate to the restaurant page
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => RestaurantScreen(
+        restaurantName: restaurant!.name,
+        restaurantImage: restaurant.img,
+        cuisineType: restaurant.cuisineType,
+        location: restaurant.location,
+        menu: menu, // Pass the menu here
+      ),
+    ),
+  );
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,10 +192,14 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
                         child: SizedBox(
                           width: MediaQuery.of(context).size.width * 0.8,
                           child: TextField(
+                            controller: _searchController,
                             decoration: InputDecoration(
                               hintText: "What Are You Looking For?",
-                              suffixIcon:
-                                  const Icon(Icons.search, color: Colors.black),
+                              suffixIcon: IconButton(
+                                icon: const Icon(Icons.search,
+                                    color: Colors.black),
+                                onPressed: _handleSearch,
+                              ),
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 12, horizontal: 28),
                               border: OutlineInputBorder(
@@ -127,6 +220,9 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
                               fillColor: Colors.grey[300],
                               filled: true,
                             ),
+                            onSubmitted: (value) {
+                              _handleSearch();
+                            },
                           ),
                         ),
                       ),
@@ -231,16 +327,35 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
                             // Define or fetch the menu for the restaurant
                             List<Dish> menu = [
                               Dish(
-                                  name: "Dish 1",
+                                  name: "Fillet mignon",
                                   description: "Delicious dish 1",
-                                  price: "21.0",
+                                  price: "820.73 EGP",
                                   imagePath: 'assets/home.png'),
                               Dish(
-                                  name: "Dish 2",
-                                  description: "Delicious dish 2",
-                                  price: " 12.0",
+                                  name: "Grilled Chicken",
+                                  description: "Grilled Chicken",
+                                  price: "410.38 EGP",
+                                  imagePath: 'assets/grilled.png'),
+                              Dish(
+                                  name: "Smoked Salmon Bites",
+                                  description: "Delicious dish 1",
+                                  price: "284.81",
+                                  imagePath: 'assets/salmon.png'),
+                              Dish(
+                                  name: "Creamy Seafood Soup",
+                                  description: "Delicious dish 1",
+                                  price: "182.38",
+                                  imagePath: 'assets/Seafood.png'),
+                              Dish(
+                                  name: "Mix Green Salad",
+                                  description: "Delicious dish 1",
+                                  price: "150.70",
                                   imagePath: 'assets/home.png'),
-                              // Add more dishes here
+                              Dish(
+                                  name: "Cocktails",
+                                  description: "Delicious dish 1",
+                                  price: "139.70",
+                                  imagePath: 'assets/salad.png'),
                             ];
 
                             Navigator.push(
@@ -290,15 +405,25 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
                             // Define or fetch the menu for the restaurant
                             List<Dish> menu = [
                               Dish(
-                                  name: "Dish 1",
+                                  name: "Healthy breakfast",
                                   description: "Delicious dish 1",
-                                  price: '20.0',
-                                  imagePath: 'assets/home.png'),
+                                  price: '120.0',
+                                  imagePath: 'assets/break1.jpg'),
                               Dish(
-                                  name: "Dish 2",
+                                  name: "Oriental breakfast",
                                   description: "Delicious dish 2",
-                                  price: '55.0',
-                                  imagePath: 'assets/home.png'),
+                                  price: '140.0',
+                                  imagePath: 'assets/break2.jpg'),
+                                  Dish(
+                                  name: "frensh breakfast",
+                                  description: "Delicious dish 2",
+                                  price: '160.0',
+                                  imagePath: 'assets/break3.jpg'),
+                                  Dish(
+                                  name: "salad breakfast",
+                                  description: "Delicious dish 2",
+                                  price: '170.0',
+                                  imagePath: 'assets/salad.png'),
                               // Add more dishes here
                             ];
 

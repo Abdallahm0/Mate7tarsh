@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mate7tarsh/Screens/complete_your_profile.dart';
-import 'package:mate7tarsh/Screens/verification_page.dart';
 import '../constants.dart';
-import '../model/signup_service.dart'; // Ensure this import is correct
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -46,27 +44,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget signUpTopImage(BuildContext context) {
     return Column(
       children: [
-         SizedBox(height: 6 * defaultPadding),
-         SizedBox(height: 20),
-         Text(
-            
-           "Sign Up",
-           style: TextStyle(
-             fontSize: 32,
-             fontWeight: FontWeight.bold,
-             color: Color(0xFF17405e),
-             letterSpacing: 1.2,
-             shadows: [
-               Shadow(
-                  
-                 color: Color.fromRGBO(0, 0, 0, 0.45),
-                 offset: Offset(3, 5),
-                 blurRadius: 7,
-         
-               ),
-             ],
-           ),
-         ),
+        SizedBox(height: 6 * defaultPadding),
+        SizedBox(height: 20),
+        Text(
+          "Sign Up",
+          style: TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF17405e),
+            letterSpacing: 1.2,
+            shadows: [
+              Shadow(
+                color: Color.fromRGBO(0, 0, 0, 0.45),
+                offset: Offset(3, 5),
+                blurRadius: 7,
+              ),
+            ],
+          ),
+        ),
         const SizedBox(height: 20),
       ],
     );
@@ -229,7 +224,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   // Submit Form
-  void _submitForm() async {
+  void _submitForm() {
     // Validate the form
     if (_nameController.text.isEmpty ||
         _emailController.text.isEmpty ||
@@ -265,36 +260,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _isLoading = true; // Show loading indicator
     });
 
-    try {
-      // Call the API
-      final response = await SignupService.signUp(
-        name: _nameController.text,
-        email: _emailController.text,
-        password: _passwordController.text,
-      );
+    // Simulate a delay for loading
+    Future.delayed(const Duration(seconds: 2), () {
+      setState(() {
+        _isLoading = false; // Hide loading indicator
+      });
 
-      // Handle the response
-      print('Sign-up successful: $response');
-
-      // Navigate to the next page after successful sign-up
+      // Navigate to the next page after successful form validation
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => const CompleteProfilePage(),
         ),
       );
-    } catch (e) {
-      // Show detailed error message
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to sign up: $e'),
-        ),
-      );
-    } finally {
-      setState(() {
-        _isLoading = false; // Hide loading indicator
-      });
-    }
+    });
   }
 }
-

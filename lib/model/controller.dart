@@ -5,7 +5,7 @@ class FoodController extends GetxController {
   // Separate lists for Lunch and Breakfast
   final List<TestModle> lunchList = [
     TestModle(
-      img: "assets/home.png",
+      img: "assets/Sizzler.png",
       name: "Sizzler",
       cuisineType: "American cuisine",
       location: "3 Al Narges St, From Tharwa St, Dokki",
@@ -13,7 +13,7 @@ class FoodController extends GetxController {
       rating: 4.5,
     ),
     TestModle(
-      img: "assets/Portadoro.jpg",
+      img: "assets/porta doro.jpg",
       name: "Porta d'oro",
       cuisineType: "Italian cuisine",
       location: "123 Main St, New York",
