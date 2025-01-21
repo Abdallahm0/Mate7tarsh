@@ -79,7 +79,7 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
               // Favorite Places Dropdown
               _buildCenteredDropdownField(
                 "Favorite Places",
-                ["Dokki", "El Sheikh Zayed", "Maadi"],
+                ["Dokki", "Zayed", "Maadi"],
                 onChanged: (value) {
                   setState(() {
                     favoritePlaces = value;
@@ -89,8 +89,8 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
               const SizedBox(height: 20),
               // Favorite Food Dropdown
               _buildCenteredDropdownField(
-                "Favorite food",
-                ["Pizza", "Burger", "Pasta", "Seafood", "Sushi"],
+                "Favorite Cuisine",
+                ["Egyptian", "Italian", "American"],
                 onChanged: (value) {
                   setState(() {
                     favoriteFood = value;
@@ -101,7 +101,7 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
               // Diseases Dropdown
               _buildCenteredDropdownField(
                 "Diseases",
-                ["Blood Pressure", "Diabates", "Allergies", "None"],
+                ["Dairy", "Sugar", "Allergies", "None"],
                 onChanged: (value) {
                   setState(() {
                     diseases = value;
@@ -142,7 +142,8 @@ class _CompleteProfilePageState extends State<CompleteProfilePage> {
   }
 
   // Input Field with Centered Text
-  Widget _buildCenteredInputField(String hintText, {ValueChanged<String>? onChanged}) {
+  Widget _buildCenteredInputField(String hintText,
+      {ValueChanged<String>? onChanged}) {
     return Container(
       width: 300,
       child: TextFormField(

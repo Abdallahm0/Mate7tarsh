@@ -88,7 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   borderRadius: BorderRadius.circular(30),
                   borderSide: BorderSide.none,
                 ),
-                hintText: "Username",
+                hintText: "Email",
                 hintStyle: TextStyle(color: Color(0xFF25507a)),
                 filled: true,
                 fillColor: Colors.white,
