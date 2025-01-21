@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 
 class SearchScreenPage extends StatelessWidget {
   final String? selectedDisease;
@@ -40,32 +39,27 @@ class SearchScreenPage extends StatelessWidget {
     },
   ];
 
-  // Function to filter restaurants and remove one random restaurant
-  List<Map<String, String>> getFilteredItems(String? disease) {
-    List<Map<String, String>> filteredList;
+  // Map to define which restaurant should be removed for each disease
+  final Map<String, String> diseaseToRestaurantMap = {
+    "Blood Pressure": "Andrea",
+    "Diabates": "Porta D'oro",
+    "Allergies": "Bonsai",
+  };
 
-    // Show all restaurants if "None" is selected
-    if (disease == "None" || disease == null) {
-      return List.from(allItems); // Return all restaurants
+  // Getter for filtered items
+  List<Map<String, String>> get filteredItems {
+    if (selectedDisease == "None" || selectedDisease == null) {
+      // If "None" is selected, display all restaurants
+      return List.from(allItems);
+    } else {
+      // If a disease is selected, remove the corresponding restaurant
+      final restaurantToRemove = diseaseToRestaurantMap[selectedDisease];
+      return allItems.where((item) => item["title"] != restaurantToRemove).toList();
     }
-
-    // Filter restaurants that do not match the selected disease
-    filteredList = allItems.where((item) => item["disease"] != disease).toList();
-
-    // If the filtered list has more than one restaurant, remove one at random
-    if (filteredList.length > 1) {
-      final randomIndex = Random().nextInt(filteredList.length);
-      filteredList.removeAt(randomIndex);
-    }
-
-    return filteredList;
   }
 
   @override
   Widget build(BuildContext context) {
-    // Get the filtered list of restaurants
-    final filteredItems = getFilteredItems(selectedDisease);
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -82,75 +76,90 @@ class SearchScreenPage extends StatelessWidget {
                 ),
               ),
             ),
+
             const SizedBox(height: 16),
-            const Text(
-              "Recommendations For You",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 20),
-            // Grid of containers
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                childAspectRatio: 0.8,
-              ),
-              itemCount: filteredItems.length,
-              itemBuilder: (context, index) {
-                final item = filteredItems[index];
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: const Offset(0, 3),
-                      ),
-                    ],
+
+            // Main content
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 16),
+                  const Text(
+                    "Recommendations For You",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Image
-                      ClipRRect(
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(12),
-                          topRight: Radius.circular(12),
+
+                  const SizedBox(height: 20),
+
+                  // Grid of containers
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                      childAspectRatio: 0.8,
+                    ),
+                    itemCount: filteredItems.length,
+                    itemBuilder: (context, index) {
+                      final item = filteredItems[index];
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.3),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
                         ),
-                        child: Image.asset(
-                          item["image"]!,
-                          height: 120,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      // Text
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              item["title"]!,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                            // Image
+                            ClipRRect(
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(12),
+                                topRight: Radius.circular(12),
+                              ),
+                              child: Image.asset(
+                                item["image"]!,
+                                height: 120,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+
+                            // Text
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item["title"]!,
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ),
-                      ),
-                    ],
+                      );
+                    },
                   ),
-                );
-              },
+                ],
+              ),
             ),
           ],
         ),

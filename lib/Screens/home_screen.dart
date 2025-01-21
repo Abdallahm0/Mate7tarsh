@@ -28,10 +28,10 @@ class _HomeScreenPageState extends State<HomeScreenPage> {
 
   final List<String> advertisementImages = [
     "assets/offer.png",
-    "assets/offer.png",
-    "assets/offer.png",
-    "assets/offer.png",
-    "assets/offer.png",
+    "assets/offer5.jpg",
+    "assets/offer2.png",
+    "assets/offer3.png",
+    "assets/offer4.png",
   ];
 
   // Fetch location when the button is pressed
